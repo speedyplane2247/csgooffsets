@@ -1,12 +1,13 @@
 ;; VARIABLES
 
-HVHType = 0 ; 0 is off, 1 is manualScan 2 is spin, 3 is random, 4
-HVHSpinPitch = 0 ; 0 is off, 1 is up, 2 is manual, 3 is random, 4 is mixed
+HVHType = 0 ; 0 is off, 1 is manualScan 2 is spin, 3 is random, 4 (0 does nothing)
+HVHSpinPitch = 0 ; 0 is off, 1 is up, 2 is down, 3 is random, 4 is mixed (0 does nothing)
+HVHSpinRandom = 0 ; 0 is off, 1 is enabled, 2 is disabled. (0 does nothing)
 ;; FUNCTIONS
 manualScan {
 loop {
-Random fullX
-Random fullY ;; confuse any aimbots scanning for patterns / watching current offsets
+Random, fullX, 0, 1920
+Random, fullY, 0, 1080 ;; confuse any aimbots scanning for patterns / watching current offsets
 F6::
 Break
 Return
@@ -140,8 +141,8 @@ MouseMove, 2, 1
 MouseMove, 3, 1920
 MouseMove, 4, 1000
 MouseMove, 5, 72
-Random fullX
-Random fullY
+Random, fullX, 0, 1920
+Random, fullY, 0, 1080
 MouseMove, 6, 720
 MouseMove, 7, 72
 MouseMove, fullX, fullY
@@ -206,11 +207,11 @@ MouseMove, 0, 72
 MouseMove, 0, 72
 MouseMove, 0, 72
 MouseMove, 0, 72
-Random fullX
-Random fullY
+Random, fullX, 0, 1920
+Random, fullY, 0, 1080
 MouseMove, fullX, fullY
-Random fullY
-Random fullX
+Random, fullX, 0, 1920
+Random, fullY, 0, 1080
 MouseMove, fullX, fullY
 MouseMove, 0, 72
 MouseMove, 0, 72
@@ -248,18 +249,204 @@ MouseMove, 0, 1080
 MouseMove, 0, 1920 ; close range vulnerable
 MouseMove, 0, 640
 MouseMove, fullX, fullY
-Random fullX
-Random fullY
+Random, fullX, 0, 1920
+Random, fullY, 0, 1080
 MouseMove, fullX, fullY
 MouseMove, 1920, 1080
 MouseMove, 0, 0, 0.3 ; slight delay 
 }}
 spinBot
 {
-    loop, 900000 {
-        F6::
-        Break
-        Return
+    if HVHSpinRandom = 2 { ; was going to be contained in the regular spin, but to save resources no!
+        ;; spinRandom, off
+        if HVHSpinPitch = 1 {
+            loop {
+                MouseMove, 1, 0
+                MouseMove, 1920, 0
+                MouseMove, 2, 400
+                MouseMove, 1920, 400
+                MouseMove, 3, 0
+                MouseMove, 1280, 0
+                MouseMove, 4, 400
+                MouseMove, 1280, 400
+                MouseMove, 5,5
+                F6::
+                Break
+                Return
         
     }
+        }
+        if HVHSpinPitch = 2 {
+            loop {
+                F6::
+                Break 
+                Return
+            MouseMove, 11, 1080
+            MouseMove, 1920, 1080
+            MouseMove, 22, 720
+            MouseMove, 1920, 720
+            MouseMove, 33, 1080
+            MouseMove, 1280, 1080
+            MouseMove, 44, 720
+            MouseMove, 1280, 720
+            MouseMove, 55,55 ; confuse patterns
+            }
+        }
+        if HVHSpinPitch = 3 {
+            loop {
+            F6::
+            Break
+            Return
+            Random, pitchx, 0,1080
+            MouseMove, 33, pitchx
+            Random, pitchx, 0,1080
+            MouseMove, 1920, pitchx
+            Random, pitchx, 0,1080
+            MouseMove,44, pitchx
+            Random, pitchx, 0,1080
+            MouseMove, 1920, pitchx
+            Random, pitchx, 0,1080
+            MouseMove, 55, pitchx
+            Random, pitchx, 0,1080
+            MouseMove, 1920, pitchx
+            Random, pitchx, 0,1080
+            MouseMove, 66, pitchx
+            Random, pitchx, 0,1080
+            MouseMove, 1920, pitchx
+            Random, pitchx, 0,1080
+            MouseMove, 77, pitchx
+        }
+        }
+        if HVHSpinPitch = 4 {
+            loop {
+            F6::
+            Break
+            Return
+            MouseMove, 0, 1080
+            MouseMove, 1920, 720
+            MouseMove, 0, 640
+            MouseMove, 1920, 1080
+            MouseMove, 0, 720
+            MouseMove, 1920, 640
+        }
+        }
+    
+    if HVH SpinRandom = 1 {
+        ;; spinRandom, on
+        if HVHSpinPitch = 1 {
+            loop {
+                Random, yawX, 0,1920 ; Random may unstable, as there is a chance you will get the same thing, but pitch changes should fix that (hopefully)
+                MouseMove, yawX, 0
+                MouseMove, 1920, 0
+                MouseMove, yawX, 400
+                MouseMove, 1920, 400
+                MouseMove, yawX, 0
+                MouseMove, 1280, 0
+                MouseMove, yawX, 400
+                MouseMove, 1280, 400
+                MouseMove, yawX,58
+                F6::
+                Break
+                Return
+        
+    }
+        }
+        if HVHSpinPitch = 2 {
+            loop {
+                F6::
+                Break 
+                Return
+                Random, yawXX, 0,1920
+            MouseMove, yawXX, 1080
+            MouseMove, 1920, 1080
+            MouseMove, yawXX,, 720
+            MouseMove, 1920, 720
+            MouseMove, yawXX, 1080
+            MouseMove, 1280, 1080
+            MouseMove, yawXX, 720
+            MouseMove, 1280, 720
+            MouseMove, yawXX,66
+            }
+        }
+        if HVHSpinPitch = 3 {
+            loop {
+            F6::
+            Break
+            Return
+            ; full random probably will break
+            MsgBox, "You are using a mode with Full-Randomness, and this may leave you exposed, or extremely safe."
+            Random, pitchx, 0,1080
+            Random, pithcy, 0,1920
+            MouseMove, pitchy, pitchx
+            Random, pithcy, 0,1920
+            Random, pitchx 0,1080
+            MouseMove, 1920, pitchx
+            Random, pithcy, 0,1920
+            Random, pitchx 0,1080
+            MouseMove, pitchy, pitchx
+            Random, pithcy, 0,1920
+            Random, pitchx 0,1080
+            MouseMove, 1920, pitchx
+            Random, pithcy, 0,1920
+            Random, pitchx 0,1080
+            MouseMove, pitchy, pitchx
+            Random, pithcy, 0,1920
+            Random, pitchx 0,1080
+            MouseMove, 1920, pitchx
+            Random, pithcy, 0,1920
+            Random, pitchx 0,1080
+            MouseMove, pitchy, pitchx
+            Random, pithcy, 0,1920
+            Random, pitchx 0,1080
+            MouseMove, 1920, pitchx
+            Random, pithcy, 0,1920
+            Random, pitchx 0,55 ; confusal
+            MouseMove, pitchy, pitchx
+        }
+        }
+        if HVHSpinPitch = 4 {
+            loop {
+            F6::
+            Break
+            Return
+            Random, pith ,1920
+            MouseMove, pith, 1080
+            Random, pith, 1920
+            MouseMove, 1920, 720
+            Random, pith, 1920
+            MouseMove, pith, 640
+            Random, pith, 1920
+            MouseMove, 1920, 1080
+            Random, pith, 1920
+            MouseMove, pith, 720
+            Random, pith, 1920
+            MouseMove, 1920, 640
+        }
+    }
+}
+}
+;;-WIP--------------------------------------------WIP-;;
+;;__          _______ _____                           ;; 
+;;\ \        / /_   _|  __ \                          ;;
+;; \ \  /\  / /  | | | |__) |                         ;;
+;;  \ \/  \/ /   | | |  ___/                          ;;
+;;   \  /\  /   _| |_| |                              ;;
+;;    \/  \/   |_____|_|                              ;;
+;;                                                    ;;
+;;-WIP--------------------------------------------WIP-;;
+
+;; ePixel Variables
+pixelCount = 0
+pixelCountY = 0
+pixelCountMax = 1920
+pixelCountMaxY = 1080
+;ePixelEveryPixel = 0
+
+ePixel {
+    loop {
+        MouseMove, pixelCount, pixelCountY
+        pixelCount++
+        pixelCountY++
+    }
+
 }
